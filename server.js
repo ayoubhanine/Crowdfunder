@@ -9,32 +9,32 @@ dotenv.config();
 
 const app = express();
 
-// ─── Middlewares ─────────────────────────────
+// Middlewares 
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
-// ─── Route test ─────────────────────────────
+// Route test 
 app.get("/", (req, res) => {
-  res.send("🚀 API Crowdfunding is running...");
+  res.send(" API Crowdfunding is running...");
 });
 
-// ─── Connexion MongoDB ──────────────────────
+//  Connexion MongoDB 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
 
-    console.log(`✅ MongoDB connected: ${conn.connection.host}`);
+    console.log(` MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`❌ Error: ${error.message}`);
+    console.error(` Error: ${error.message}`);
     process.exit(1);
   }
 };
 
-// ─── Lancer serveur ─────────────────────────
+// Lancer serveur
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
   await connectDB();
-  console.log(`🔥 Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });
