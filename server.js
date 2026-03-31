@@ -1,40 +1,24 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-import morgan from "morgan";
 import cors from "cors";
+import connectDB from "./config/db.js";
 
-// Charger variables d'environnement
 dotenv.config();
+connectDB();
 
 const app = express();
 
-// Middlewares 
+// Middlewares
 app.use(express.json());
 app.use(cors());
-app.use(morgan("dev"));
 
-// Route test 
+// Test route
 app.get("/", (req, res) => {
-  res.send(" API Crowdfunding is running...");
+  res.json({ message: "API is running " });
 });
 
-//  Connexion MongoDB 
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-
-    console.log(` MongoDB connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(` Error: ${error.message}`);
-    process.exit(1);
-  }
-};
-
-// Lancer serveur
+// Server start
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, async () => {
-  await connectDB();
-  console.log(` Server running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
