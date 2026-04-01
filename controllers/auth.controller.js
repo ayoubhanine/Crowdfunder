@@ -9,7 +9,7 @@ const generateToken = (id) => {
   });
 };
 
-// 🔹 REGISTER
+//  REGISTER
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -45,7 +45,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// 🔹 LOGIN
+//  LOGIN
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
