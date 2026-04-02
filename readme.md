@@ -4,7 +4,7 @@
 ![Class Diagram](diagrammmes/ClassDiagram.png)
 
 ### Diagramme de séquence
-![Sequence Diagram](diagramMmes/SequenceDiagramm.png)
+![Sequence Diagram](diagrammmes/SequenceDiagramm.png)
 
 ### Diagramme de cas d'utilisation
 ![Use Case](diagrammmes/useCasediagram.png)
