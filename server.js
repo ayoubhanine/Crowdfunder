@@ -5,6 +5,9 @@ import connectDB from "./config/db.js";
 import projectRoutes from "./routes/project.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import investmentRoutes from "./routes/investment.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
+
+
 
 dotenv.config();
 connectDB();
@@ -17,6 +20,7 @@ app.use(cors());
 app.use("/api", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/investments", investmentRoutes);
+app.use("/api/admin", adminRoutes);
 // Test route
 
 // Server start

@@ -1,5 +1,5 @@
 import { protect } from "../middlewares/auth.middleware.js";
-import Investment from "../models/Investment.js";
+import Investement from "../models/Investment.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
 
@@ -117,7 +117,7 @@ export const getProjectInvestors=async(req,res)=>{
 //Portfolio utilisateur
 export const getUserPortfolio = async (req, res) => {
   try {
-    const investments = await Investment.find({
+    const investments = await Investement.find({
       investor: req.user._id,
     }).populate("project");
 
