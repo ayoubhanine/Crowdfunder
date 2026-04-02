@@ -1,3 +1,14 @@
+## 📐 Diagrammes UML
+
+### Diagramme de classes
+![Class Diagram](diagrammmes/ClassDiagram.png)
+
+### Diagramme de séquence
+![Sequence Diagram](diagramMmes/SequenceDiagramm.png)
+
+### Diagramme de cas d'utilisation
+![Use Case](diagrammmes/useCasediagram.png)
+
 ## 📁 Project Structure
 
 ```
