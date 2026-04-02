@@ -11,7 +11,7 @@ export const Investproject = async (req, res) => {
       return res.status(404).json({ message: "le projet non trouvé" });
     }
     //  Vérifier projet ouvert
-    if (project.status === close) {
+    if (project.status === "closed") {
       return res.status(400).json({ message: "le projet est fermé" });
     }
     // Vérifier capital restant
@@ -24,7 +24,7 @@ export const Investproject = async (req, res) => {
     //  Vérifier 50%
     const maxAllowed = project.capital * 0.5;
     if (amount > maxAllowed) {
-      return res.json
+      return res
         .status(400)
         .json({ message: "le prix est depassé le 50% de capital de projet" });
     }
