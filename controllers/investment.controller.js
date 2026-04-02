@@ -1,4 +1,5 @@
-import Investement from "../models/Investment.js";
+import { protect } from "../middlewares/auth.middleware.js";
+import Investment from "../models/Investment.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
 
@@ -60,6 +61,83 @@ export const Investproject = async (req, res) => {
     res.status(201).json({
       message: "Investment successful",
       investment,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+//Voir MES investissements
+export const getMyInvestements=async (req,res)=>{
+  try{
+    const investements=await Investement.find({
+      investor:req.user._id,
+       }).populate("project","title capital");
+       const results=investements.map((inv)=>{
+        const percentage=((inv.amount/inv.project.capital)*100).toFixed(2)
+    
+       return{
+        project:inv.project.title,
+        amount:inv.amount,
+        percentage:percentage + "%",
+       };
+      });
+      res.json(results)
+  }
+  catch(error){
+    res.status(500).json({message:error.message})
+
+  }
+};
+//Voir investisseurs d’un projet
+export const getProjectInvestors=async(req,res)=>{
+  try{  
+      const {id}=req.params;
+      const investements=await Investement.find({project:id})
+      .populate("investor","name")
+      .populate("project","capital title")
+
+      const results=investements.map((inv)=>{
+        const percentage=((inv.amount/inv.project.capital)*100).toFixed(2);
+        return{
+          investor:inv.investor.name,
+          amount:inv.amount,
+          percentage:percentage + "%",
+          
+        };
+        
+
+      });
+      res.json(results)
+
+  }
+  catch(error){
+      res.status(500).json({message:error.message})
+  }
+};
+//Portfolio utilisateur
+export const getUserPortfolio = async (req, res) => {
+  try {
+    const investments = await Investment.find({
+      investor: req.user._id,
+    }).populate("project");
+
+    let totalInvested = 0;
+
+    const projects = investments.map((inv) => {
+      totalInvested += inv.amount;
+
+      const percentage = ((inv.amount / inv.project.capital) * 100).toFixed(2);
+
+      return {
+        project: inv.project.title,
+        amount: inv.amount,
+        percentage: percentage + "%",
+      };
+    });
+
+    res.json({
+      totalInvested,
+      projects,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
