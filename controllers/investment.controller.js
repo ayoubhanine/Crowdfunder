@@ -8,6 +8,12 @@ export const Investproject = async (req, res) => {
     const { amount } = req.body;
     const projectId = req.params.id;
     const project = await Project.findById(projectId);
+
+    if (!amount || amount <= 0) {
+  return res.status(400).json({
+    message: "Montant invalide",
+  });
+}
     if (!project) {
       return res.status(404).json({ message: "le projet non trouvé" });
     }
@@ -16,19 +22,37 @@ export const Investproject = async (req, res) => {
       return res.status(400).json({ message: "le projet est fermé" });
     }
     // Vérifier capital restant
-    const remaining = project.capital - project.currentamount;
+    const remaining = project.capital - project.currentAmount;
     if (amount > remaining) {
       return res
         .status(400)
         .json({ message: "le prix depasser le capital restant " });
     }
-    //  Vérifier 50%
-    const maxAllowed = project.capital * 0.5;
-    if (amount > maxAllowed) {
-      return res
-        .status(400)
-        .json({ message: "le prix est depassé le 50% de capital de projet" });
-    }
+  
+    //  Vérifier total investi par cet utilisateur dans ce projet
+      const previousInvestments = await Investement.find({
+        investor: req.user._id,
+        project: project._id,
+              });
+
+    // Calcul avec boucle for
+    let totalInvestedByUser = 0;
+
+    for (let i = 0; i < previousInvestments.length; i++) {
+    totalInvestedByUser += previousInvestments[i].amount;
+      }
+
+// Nouveau total après investissement
+    const newTotal = totalInvestedByUser + amount;
+
+    // 50% du capital
+const maxAllowed = project.capital * 0.5;
+
+if (newTotal > maxAllowed) {
+  return res.status(400).json({
+    message: "Vous ne pouvez pas dépasser 50% du capital du projet",
+  });
+}
     //  Vérifier balance
     const user = await User.findById(req.user._id);
     if (user.balance < amount) {
