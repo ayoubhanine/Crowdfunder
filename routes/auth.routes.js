@@ -7,5 +7,26 @@ const router = express.Router();
 
 router.post("/register",  registerValidation,handleValidationErrors, registerUser);
 router.post("/login",  loginValidation,handleValidationErrors, loginUser);
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Connexion utilisateur
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login réussi
+ */
 
 export default router;
