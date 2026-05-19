@@ -76,7 +76,7 @@ if (newTotal > maxAllowed) {
     project.currentAmount += amount;
 
     //  Fermeture auto
-    if (project.currentAmount >= project.capital) {
+    if (project.currentAmount == project.capital) {
       project.status = "closed";
     }
 

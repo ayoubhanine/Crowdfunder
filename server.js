@@ -6,6 +6,7 @@ import projectRoutes from "./routes/project.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import investmentRoutes from "./routes/investment.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import dashboardRoutes from './routes/dashboard.routes.js';
 
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
@@ -26,6 +27,7 @@ app.use("/api", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/investments", investmentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/dashboard",dashboardRoutes)
 // Test route
 
 // Server start

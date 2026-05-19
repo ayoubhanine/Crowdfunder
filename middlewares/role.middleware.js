@@ -1,4 +1,4 @@
-export const authorizeRoles = (...roles) => {
+export const authorizeRoles = (...roles) => {       //rest parameter
   return (req, res, next) => {
     // Vérifier si user existe (injecté par protect)
     if (!req.user) {
