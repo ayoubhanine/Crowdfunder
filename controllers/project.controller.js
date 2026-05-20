@@ -1,3 +1,4 @@
+
 import Project from "../models/Project.js";
 
 //  CREATE PROJECT
@@ -116,3 +117,14 @@ export const closeProject = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getAllProjects=async (req,res)=>{
+  try{
+    const projects=await Project.find()
+    return res.json(projects)
+  }
+  catch(error){
+    return res.status(500).json({message:error.message})
+  }
+
+
+}
