@@ -2,7 +2,7 @@ import express from "express";
 import { protect } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/role.middleware.js";
 import { Investproject,getMyInvestements,
-    getProjectInvestors,getUserPortfolio } from "../controllers/investment.controller.js";
+    getProjectInvestors,getUserPortfolio,getPartnersRegistry } from "../controllers/investment.controller.js";
 
 const router = express.Router();
 
@@ -20,4 +20,6 @@ router.get(
 );
 //portfolio
 router.get("/portfolio",protect,authorizeRoles("investor"),getUserPortfolio)
+//partner
+router.get("/partner",protect,getPartnersRegistry)
 export default router;

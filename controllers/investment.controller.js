@@ -167,3 +167,36 @@ export const getUserPortfolio = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getPartnersRegistry = async (req, res) => {
+  try {
+    // Récupération de tous les investissements avec jointures (Populate)
+    const investments = await Investement.find()
+      .populate("investor", "name email")
+      .populate("project", "title capital");
+
+    // Formatage des données conforme au design "Annuaire des Partenaires"
+    const registry = investments.map((inv) => {
+      const projectCapital = inv.project?.capital || 0;
+      
+      // Calcul hautement précis du pourcentage de part de l'entité
+      const sharePercent = projectCapital > 0 
+        ? Math.round((inv.amount / projectCapital) * 100) 
+        : 0;
+
+      return {
+        id: inv._id,
+        entityName: inv.investor?.name || "Investisseur Anonyme",
+        associatedProject: inv.project?.title || "Projet Supprimé",
+        volume: inv.amount,
+        share: sharePercent,
+      };
+    });
+
+    return res.status(200).json(registry);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la génération de l'annuaire des partenaires",
+      error: error.message,
+    });
+  }
+};
