@@ -5,6 +5,7 @@ import {
   updateProject,
   deleteProject,
   closeProject,
+  getProjectById,
 } from "../controllers/project.controller.js";
 
 import { protect } from "../middlewares/auth.middleware.js";
@@ -15,6 +16,7 @@ const router = express.Router();
 // Owner seulement
 router.post("/", protect, authorizeRoles("owner"), createProject);
 router.get("/my", protect, authorizeRoles("owner"), getMyProjects);
+router.get("/:id",protect,authorizeRoles("owner"),getProjectById)
 router.put("/:id", protect, authorizeRoles("owner"), updateProject);
 router.delete("/:id", protect, authorizeRoles("owner"), deleteProject);
 router.patch("/:id/close", protect, authorizeRoles("owner"), closeProject);
