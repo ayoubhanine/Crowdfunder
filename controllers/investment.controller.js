@@ -169,19 +169,33 @@ export const getUserPortfolio = async (req, res) => {
 };
 export const getPartnersRegistry = async (req, res) => {
   try {
-    // Récupération de tous les investissements avec jointures (Populate)
+
+    // récupérer uniquement les investissements
+    // des projets appartenant au owner connecté
     const investments = await Investement.find()
       .populate("investor", "name email")
-      .populate("project", "title capital");
+      .populate({
+        path: "project",
+        select: "title capital owner",
+        match: {
+          owner: req.user._id
+        }
+      });
 
-    // Formatage des données conforme au design "Annuaire des Partenaires"
-    const registry = investments.map((inv) => {
+    // supprimer les investissements dont le projet ne correspond pas
+    const filteredInvestments = investments.filter(
+      inv => inv.project !== null
+    );
+
+    // formatage
+    const registry = filteredInvestments.map((inv) => {
+
       const projectCapital = inv.project?.capital || 0;
-      
-      // Calcul hautement précis du pourcentage de part de l'entité
-      const sharePercent = projectCapital > 0 
-        ? Math.round((inv.amount / projectCapital) * 100) 
-        : 0;
+
+      const sharePercent =
+        projectCapital > 0
+          ? Math.round((inv.amount / projectCapital) * 100)
+          : 0;
 
       return {
         id: inv._id,
@@ -193,6 +207,7 @@ export const getPartnersRegistry = async (req, res) => {
     });
 
     return res.status(200).json(registry);
+
   } catch (error) {
     return res.status(500).json({
       message: "Erreur lors de la génération de l'annuaire des partenaires",
