@@ -24,7 +24,9 @@ export const createProject = async (req, res) => {
 //  GET MY PROJECTS
 export const getMyProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ owner: req.user._id });
+    const projects = await Project.find({ owner: req.user._id })
+      .populate("owner", "name");
+
     res.json(projects);
   } catch (error) {
     res.status(500).json({ message: error.message });
