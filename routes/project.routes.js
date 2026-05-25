@@ -18,7 +18,7 @@ const router = express.Router();
 router.post("/", protect, authorizeRoles("owner"), createProject);
 router.get("/my", protect, authorizeRoles("owner","investor"), getMyProjects);
 router.get("/",getAllProjects)
-router.get("/:id",protect,authorizeRoles("owner"),getProjectById)
+router.get("/:id",protect,authorizeRoles("owner","investor"),getProjectById)
 router.put("/:id", protect, authorizeRoles("owner"), updateProject);
 router.delete("/:id", protect, authorizeRoles("owner"), deleteProject);
 router.patch("/:id/close", protect, authorizeRoles("owner"), closeProject);
