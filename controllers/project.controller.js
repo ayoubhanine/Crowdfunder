@@ -119,14 +119,19 @@ export const closeProject = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-export const getAllProjects=async (req,res)=>{
-  try{
-    const projects=await Project.find()
-    return res.json(projects)
-  }
-  catch(error){
-    return res.status(500).json({message:error.message})
-  }
+export const getAllProjects = async (req, res) => {
+  try {
 
+    const projects = await Project.find()
+      .populate("owner", "name");
 
-}
+    return res.json(projects);
+
+  } catch (error) {
+
+    return res.status(500).json({
+      message: error.message
+    });
+
+  }
+};
