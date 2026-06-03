@@ -2,6 +2,7 @@ import { protect } from "../middlewares/auth.middleware.js";
 import Investement from "../models/Investment.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
+import Wallet from "../models/Wallet.js";
 
 export const Investproject = async (req, res) => {
   try {
@@ -10,10 +11,10 @@ export const Investproject = async (req, res) => {
     const project = await Project.findById(projectId);
 
     if (!amount || amount <= 0) {
-  return res.status(400).json({
-    message: "Montant invalide",
-  });
-}
+      return res.status(400).json({
+        message: "Montant invalide",
+      });
+    }
     if (!project) {
       return res.status(404).json({ message: "le projet non trouvé" });
     }
@@ -30,29 +31,29 @@ export const Investproject = async (req, res) => {
     }
   
     //  Vérifier total investi par cet utilisateur dans ce projet
-      const previousInvestments = await Investement.find({
-        investor: req.user._id,
-        project: project._id,
-              });
+    const previousInvestments = await Investement.find({
+      investor: req.user._id,
+      project: project._id,
+    });
 
     // Calcul avec boucle for
     let totalInvestedByUser = 0;
 
     for (let i = 0; i < previousInvestments.length; i++) {
-    totalInvestedByUser += previousInvestments[i].amount;
-      }
+      totalInvestedByUser += previousInvestments[i].amount;
+    }
 
-// Nouveau total après investissement
+    // Nouveau total après investissement
     const newTotal = totalInvestedByUser + amount;
 
     // 50% du capital
-const maxAllowed = project.capital * 0.5;
+    const maxAllowed = project.capital * 0.5;
 
-if (newTotal > maxAllowed) {
-  return res.status(400).json({
-    message: "Vous ne pouvez pas dépasser 50% du capital du projet",
-  });
-}
+    if (newTotal > maxAllowed) {
+      return res.status(400).json({
+        message: "Vous ne pouvez pas dépasser 50% du capital du projet",
+      });
+    }
     //  Vérifier balance
     const user = await User.findById(req.user._id);
     if (user.balance < amount) {
@@ -68,9 +69,28 @@ if (newTotal > maxAllowed) {
       amount,
     });
 
-    //  Update balance
+    //  Update balance de l'utilisateur
     user.balance -= amount;
     await user.save();
+
+    // ─── START : SYNCHRONISATION DU WALLET ───
+    let wallet = await Wallet.findOne({ userId: user._id });
+    if (!wallet) {
+      // Au cas où le wallet n'existe pas encore, on le crée directement
+      wallet = new Wallet({ userId: user._id, balance: user.balance });
+    } else {
+      // Sinon on déduit le montant investi du solde du wallet
+      wallet.balance -= amount;
+    }
+
+    // On ajoute l'action dans l'historique du portefeuille
+    wallet.history.unshift({
+      type: "Investissement",
+      amount: amount,
+      date: new Date()
+    });
+    await wallet.save();
+    // ─── END : SYNCHRONISATION DU WALLET ───
 
     //  Update project
     project.currentAmount += amount;
