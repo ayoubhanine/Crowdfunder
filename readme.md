@@ -85,130 +85,263 @@ crowdfunding-api/
 ├── package.json              # Project dependencies and scripts
 └── README.md                 # Project documentation
 ```
-# 📘 Crowdfunding API Documentation
+# Crowdfunder – Plateforme de Financement Participatif
 
-## 📘 API Documentation avec Swagger
+## 1. Nom du projet
 
-Ce projet utilise **Swagger (OpenAPI)** pour documenter et tester les endpoints de l’API de crowdfunding.
-
----
-
-### 🚀 Accéder à la documentation
-
-Une fois le serveur démarré, la documentation Swagger est disponible à l’adresse suivante :
-
-```
-http://localhost:3000/api-docs
-```
-
-Swagger UI permet de :
-- Visualiser toutes les routes de l’API
-- Tester les requêtes directement depuis le navigateur
-- Voir les schémas des données (request/response)
+**Nom du projet :** Investor-Platform
 
 ---
 
-### ⚙️ Configuration de Swagger
+# 2. Présentation du projet
 
-Swagger est configuré avec :
+Crowdfunder ou Investor-Platform est une application web de financement participatif permettant aux investisseurs de découvrir des projets, d'investir dans ceux qui les intéressent et de gérer leur portefeuille d'investissements.
 
-- `swagger-jsdoc` → Génération automatique de la documentation
-- `swagger-ui-express` → Interface utilisateur interactive
+Elle s'adresse principalement aux investisseurs souhaitant financer des projets innovants ainsi qu'aux porteurs de projets recherchant des financements.
 
-Exemple de configuration :
-
-```js
-import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
-
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Crowdfunding API",
-      version: "1.0.0",
-      description: "API de gestion de financement participatif",
-    },
-    servers: [
-      {
-        url: "http://localhost:3000",
-      },
-    ],
-  },
-  apis: ["./routes/*.js"],
-};
-
-const specs = swaggerJsdoc(options);
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
-```
+Son objectif principal est de proposer une plateforme simple, intuitive et sécurisée permettant de suivre les investissements en temps réel.
 
 ---
 
-### 🔐 Exemple : Route Login
+# 3. Problématique
 
-```js
-/**
- * @swagger
- * /api/auth/login:
- *   post:
- *     summary: Connexion utilisateur
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 example: 123456
- *     responses:
- *       200:
- *         description: Login réussi
- *       400:
- *         description: Erreur de validation
- */
-```
+Le problème identifié est qu'il est souvent difficile pour les investisseurs de trouver une plateforme simple leur permettant de découvrir des projets, d'investir facilement et de suivre leurs participations.
+
+La solution proposée permet de consulter les projets disponibles, d'effectuer des investissements, d'alimenter son portefeuille et de suivre l'ensemble de ses participations depuis un tableau de bord unique.
 
 ---
 
-### 🧪 Tester une requête dans Swagger
+# 4. Fonctionnalités principales
 
-1. Ouvrir Swagger UI (`/api-docs`)
-2. Choisir une route (ex: `/api/auth/login`)
-3. Cliquer sur **"Try it out"**
-4. Remplir les données JSON
-5. Cliquer sur **"Execute"**
-
----
-
-### 📌 Bonnes pratiques
-
-- Toujours utiliser le chemin complet (ex: `/api/auth/login`)
-- Documenter toutes les routes (Auth, Projects, Investments…)
-- Ajouter des exemples pour faciliter les tests
-- Regrouper les routes avec des `tags`
+- Créer un compte investisseur
+- Se connecter à son espace personnel
+- Consulter la liste des projets disponibles
+- Rechercher et filtrer les projets
+- Investir dans un projet
+- Consulter et gérer son portefeuille d'investissements
 
 ---
 
-### 🛠️ Technologies utilisées
+# 5. Technologies utilisées
+
+| Technologie          | Utilisation dans le projet                            |
+| -------------------- | ----------------------------------------------------- |
+| React.js             | Développement de l'interface utilisateur              |
+| Redux Toolkit        | Gestion de l'état global de l'application             |
+| React Router         | Navigation entre les différentes pages                |
+| Axios                | Communication avec l'API REST                         |
+| Tailwind CSS         | Mise en forme et conception responsive de l'interface |
+| Node.js & Express.js | Développement de l'API Backend                        |
+| MongoDB              | Stockage des données                                  |
+| JWT                  | Authentification sécurisée des utilisateurs           |
+| Git & GitHub         | Gestion des versions du projet                        |
+
+Nous avons utilisé **Redux Toolkit** afin de centraliser la gestion des données de l'application grâce aux slices, au Store Redux et à `createAsyncThunk`.
+
+---
+
+# 6. Installation et lancement
+
+## 6.1 Prérequis
+
+Pour utiliser ce projet, vous devez disposer de :
 
 - Node.js
-- Express.js
-- Swagger (OpenAPI 3)
-- swagger-jsdoc
-- swagger-ui-express
+- npm
+- Git
+- MongoDB
+- Visual Studio Code
 
 ---
 
-## ✅ Résultat
+## 6.2 Cloner le dépôt
 
-Grâce à Swagger, ton API est :
-- Facile à comprendre 📖
-- Facile à tester 🧪
-- Professionnelle 🚀
+```bash
+git clone https://github.com/ayoubhanine/Investor-Platform.git
+```
+
+---
+
+## 6.3 Ouvrir le dossier
+
+```bash
+cd Investor-Platform
+```
+
+---
+
+## 6.4 Installer les dépendances
+
+### Frontend
+
+```bash
+cd client
+npm install
+```
+
+### Backend
+
+```bash
+cd server
+npm install
+```
+
+---
+
+## 6.5 Variables d'environnement
+
+### Backend (.env)
+
+```env
+PORT=5000
+
+MONGODB_URI=your_mongodb_connection
+
+JWT_SECRET=your_secret_key
+```
+
+### Frontend (.env)
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+## 6.6 Lancer le projet
+
+### Backend
+
+```bash
+cd server
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd client
+npm run dev
+```
+
+---
+
+## 6.7 Ouvrir le projet
+
+Frontend
+
+```
+http://localhost:5173
+```
+
+Backend
+
+```
+http://localhost:5000
+```
+
+---
+
+# 7. Captures d'écran
+
+## Capture 1
+
+### Tableau de bord Investisseur
+
+```md
+![Dashboard](./screenshots/dashboard.png)
+```
+
+Cette capture montre le tableau de bord de l'investisseur avec le solde disponible, le montant total investi et les statistiques générales.
+
+---
+
+## Capture 2
+
+### Liste des projets
+
+```md
+![Projects](./screenshots/projects.png)
+```
+
+Cette capture montre la liste des projets disponibles avec la recherche, les filtres et les informations de chaque projet.
+
+---
+
+# 8. Contribution personnelle
+
+Ma contribution principale a porté sur le développement complet de l'interface utilisateur avec React.
+
+J'ai également travaillé sur la mise en place de Redux Toolkit (Store, Slices, createAsyncThunk), l'intégration des appels API, le routage avec React Router ainsi que la gestion des états de chargement, des erreurs et des résultats.
+
+J'ai été responsable de l'intégration entre le Frontend et le Backend, de la gestion des investissements, du portefeuille investisseur et du tableau de bord.
+
+---
+
+# 9. Difficultés rencontrées
+
+## Difficulté 1
+
+### Problème rencontré
+
+Synchroniser les différents états Redux entre le portefeuille, les projets et les investissements.
+
+### Recherches / Tests
+
+Étude de la documentation officielle Redux Toolkit et réalisation de plusieurs tests avec Redux DevTools.
+
+### Solution
+
+Utilisation de plusieurs slices indépendants et de `createAsyncThunk` pour gérer les appels API asynchrones.
+
+### Ce que j'ai appris
+
+Cette difficulté m'a permis de mieux comprendre l'organisation d'un Store Redux complexe et la communication entre plusieurs slices.
+
+---
+
+## Difficulté 2
+
+### Problème rencontré
+
+Gérer la protection des routes nécessitant une authentification.
+
+### Recherches / Tests
+
+Lecture de la documentation JWT et tests de plusieurs méthodes de stockage du token.
+
+### Solution
+
+Mise en place d'une authentification basée sur JWT avec protection des routes privées.
+
+### Ce que j'ai appris
+
+Cette difficulté m'a permis de mieux comprendre le fonctionnement de l'authentification sécurisée dans une application React.
+
+---
+
+# 10. Améliorations possibles
+
+Dans une prochaine version, je pourrais :
+
+- Ajouter les paiements en ligne (Stripe ou PayPal).
+- Envoyer des notifications en temps réel.
+- Ajouter des tests unitaires et d'intégration.
+- Déployer l'application sur Vercel et Render.
+
+## Conclusion
+
+Ces améliorations permettraient d'améliorer la sécurité, les performances et l'expérience utilisateur tout en rendant la plateforme prête pour une utilisation en production.
+
+---
+
+# ✅ Checklist finale
+
+- Projet clairement présenté.
+- Fonctionnalités principales décrites.
+- Technologies expliquées.
+- Installation documentée.
+- Captures d'écran prévues.
+- Contribution personnelle précisée.
+- Difficultés rencontrées expliquées.
+- Pistes d'amélioration proposées.
